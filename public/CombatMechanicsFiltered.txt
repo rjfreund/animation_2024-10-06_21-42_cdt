@@ -1,0 +1,183 @@
+Generalized Sequence
+     - Pre-combat set up
+     - Combatant takes an action
+                o Attack, Maneuver, or Use Item
+     - After action checks
+                o Win/Loss, Action counter/Turn swapper
+- Will need to make some corrections/changes as game develops
+- Some tweaks (specifically to Roll() numbers) for balancing
+-Written to resemble code
+------------------------------------------------------------------------------------------------   ------------------------------------------
+Notes on formatting
+     - Roll(f,n,b)                                                                                 This is a variation on dice
+                o f = # of faces on die                                                            notation. For example: 1d20+2,
+                o n = # of die rolled                                                              one 20-sided die is rolled and 2
+                o b = modifier (bonus) to roll                                                     is added to the result.
+------------------------------------------------------------------------------------------------   ------------------------------------------
+Combat Sequence
+     1) Initial Setup
+                a. Turn order determination                                                        Is rolling for initiative in D&D
+                            i. Player roll(20,1,b) → P                                             Bonus tied to some undefined
+                           ii. Game roll(20,1,b) → G                                               attribute, currently is 0
+                          iii. If (P > G)                                                          Bigger value goes first
+                                     1. Then (T → 0, Goto [Action Menu])                           T is turn tracker, see Turn Check
+                                     2. Else (T → 2, Goto [Game Actions])                          notes
+                b. Encounter distance
+                            i. D → 3                                                               Sets initial distance to 3
+------------------------------------------------------------------------------------------------   ------------------------------------------
+     2) Actions Menu
+                a. Attack
+                            i. Cannon shot – Goto [Attacks (a)]                                    Enabled when D > 0
+                           ii. Rifle shot – Goto [Attacks (b)]                                     Long range, enabled at D > 1
+                          iii. Boarding Party – Goto [Attacks (c)]                                 Enabled at D = 0
+                b. Maneuver
+                            i. Close – Goto [Moves (a)]                                            D reduces by 1
+                           ii. Gain – Goto [Moves (b)]                                             D increases by 1
+                          iii. Brace – Goto [Moves (c)]                                            Reduced crew casualties
+                c. Use Item
+                            i. Shoring – Goto [Items (a)]                                          Recovers some Ship HP
+                           ii. Dressing – Goto [Items (b)]                                         Recovers some crew
+                          iii. Switch Ammo – Goto [Items (c)]                                      Changes ammo type in Cannon
+------------------------------------------------------------------------------------------------   ------------------------------------------
+     3) After Action
+                a. Distance                                                                        When D = 6, flee from battle
+                            i. If (D = 6)
+                                     1. Goto [End States (a)]
+                b. Player Win checks
+                            i. Or (GH < 1, GC < 1)                                                 GH = Game HP, GC = Game crew
+                                     1. Goto [End States (b)]
+                c. Player Loss checks
+                            i. Or (PH < 1, PC < 1)                                                 PH = Player HP, PC = Player crew
+                                     1. Goto [End States (c)]
+                d. Turn Check
+                            i. 1 + T → T                                                           Ticks up turn tracker
+                           ii. If (T = 4)
+                                     1. Then (T → 0)                                               Tracker reset
+                          iii. If (T < 2)
+                                     1. Then (Goto [Action Menu])                                  Player’s turn if T = 0 or 1
+                                     2. Else (Goto [Game Actions])                                 Game’s turn if T = 2 or 3
+------------------------------------------------------------------------------------------------   ------------------------------------------
+     4) End States
+                a. Flee from battle
+                            i. Display “You lose sight of them”
+                           ii. Return to [Travel Screen]                                           Default when out of battle
+                b. Win battle
+                            i. Display “Success! You gained:”
+                           ii. Display [loot gained]
+                          iii. Return to [Travel Screen]                                           Loot specific to enemy, need
+                c. Lose battle                                                                     loot tables
+                            i. Display “You’ve been Sunk!”
+                           ii. Display “GAME OVER”
+                          iii. Return to [Title Screen]                                            Restart or quit
+------------------------------------------------------------------------------------------------   ------------------------------------------
+     5) Attacks
+                a. Cannon
+                            i. Distance Check
+                                     1. If (D < 1)                                                 Can’t use cannon if ship is next
+                                                a. Then (Display “Too close”)                      to the other ship
+                           ii. Ammo Check
+                                     1. And (AT = 1, A1 > 0)                                       AT is for ammo type
+                                                a. Then (Display “Out of shot”,                    A1 tracks ammo type one:
+                                                      Goto [Attack Menu])                          ‘standard balls’
+                                     2. And (AT = 2, A2 > 0)                                       A2 tracks ammo type two:
+                                                a. Then (Display “Out of chain”,                   ‘grape shot’
+                                                      Goto [Attack Menu])
+                          iii. Damage Roll
+                                     1. If (AT = 1)                                                Normal shot damages the ship
+                                                a. Then (…)                                        mostly with some loss of crew
+                                                            i. GH - Roll(10,2,-D) → GH             Distance impacts effectiveness
+                                                           ii. GC – Roll(6,1,-D) → GC
+                                                          iii. A1 – 1 → A1                         Decrement’s ammo
+                                     2. If (AT = 2)                                                Grape shot mostly kills crew,
+                                                a. Then (…)                                        doing little damage to ship
+                                                            i. GH – Roll(6,1,-D) → GH
+                                                           ii. GC – Roll(8,1,-D) → GC
+                                                          iii. A2 – 1 → A2
+                          iv. Goto [After Action]
+                b. Rifle
+                            i. Distance Check                                                      Rifles are for long range
+                                     1. If (D < 1)                                                 accuracy at the expense of
+                                                a. Then (“Too close to shoot”,                     damage
+                                                      Goto [Attack Menu])
+                           ii. Ammo Check
+                                     1. If (A3 < 1)
+                                                a. Then (“Out of ammo!”, Goto
+                                                      [Attack Menu])
+                          iii. Damage Roll
+                                     1. GH – Roll(10,1,-D) → GH
+                                     2. GC – Roll(4,1,0) → GC
+                                     3. A3 – 1 → A3
+                          iv. Goto [After Action]
+                c. Boarding Party                                                                  Boarding relies on crew
+                            i. Distance Check                                                      numbers to deal damage
+                                     1. If (D =/= 0)
+                                                a. Then (“Out of range!”, Goto                     Will need to be modified for
+                                                      [Attack Menu]                                combat without enemy crews
+                           ii. Damage Roll
+                                     1. GC – Roll(PC,1,b) → GC                                     Damage based on crew pop.
+                                     2. PC – Roll(20,1,b) → PC                                     Some casualties occur
+                          iii. Goto [After Action]
+------------------------------------------------------------------------------------------------   ------------------------------------------
+     6) Moves
+                a. Close
+                            i. D – 1 → D
+                           ii. Goto [After Action]
+                b. Gain
+                            i. D + 1 → D
+                           ii. Goto [After Action]
+                c. Brace
+                            i. [This is to be temporary bonus to reduce crew                       Probably implemented with a
+                                loss during the game’s next turn]                                  negative bonus on Game’s
+                           ii. Goto [After Action]                                                 attack
+------------------------------------------------------------------------------------------------   ------------------------------------------
+     7) Items
+                a. Shoring                                                                         Shoring is wooden bracing and
+                            i. If (IS > 0) (Shoring Inventory)                                     looks like the inside of a mine
+                                     1. Then (Roll(8,3,b) + PH → PH                                shaft when implemented
+                                     2. Else (“None left to use!”)
+                           ii. Goto [After Action]
+                b. Dressings                                                                       Dressing as in wound dressings
+                            i. If (ID > 0) (Dressing Inventory)
+                                     1. Then (Roll(10,1,b) + PC → PC
+                                                1. Else (“None left to use!”)
+                                      ii. Goto [After Action]
+                b. Switch Ammo
+                           ii. If (AT = 1)
+                                     1. Then (AT → 2)
+                                     2. Else (AT → 1)
+                          iii. Goto [After Action]
+------------------------------------------------------------------------------------------------   ------------------------------------------
+     8) Game Actions
+                a. [Game actions will be similar to how Player actions
+                     work, but need to be written to specific enemies. A
+                     pirate ship for example will have access to the same
+                     attacks, items and maneuvers. But a sea monster will
+                     have very different options to combat the player, such
+                     as tentacle attacks, etc.]
+                b. Goto [After Action]
+
+
+List of Variables needed
+Full Name               Abbr.            Description
+Player Initiative       P                Used to determine turn order
+Game Initiative         G                Used to determine turn order
+Turn Tracker            T                For turn order. 1,2 is for player’s turn
+                                         and 3,4 is for game’s turn
+Ship Distance                  D         Engagement distance. Some combat
+                                         mechanics use distance
+Game HP                        GH        Game ‘ship’ hit points. Also for sea
+                                         monster hit points
+Player HP                      PH        Player’s ship’s hit points
+Game Crew                      GC        Need crew to man ship. May need
+                                         modification for sea monsters
+Player Crew                    PC        Player’s crew count
+Ammo tracker                   AT        Used in code to determine how to
+                                         calculate damage
+Ammo count Ball                A1        Normal canon shot. High hull
+                                         damage, low crew damage
+Ammo count Grape               A2        Alternate canon shot. Low hull
+                                         damage, high crew damage
+Ammo count Rifle               A3        Long range, low damage
+Shoring Inventory              IS        Restores some ship HP
+Dressing Inventory             ID        Restores some crew
+

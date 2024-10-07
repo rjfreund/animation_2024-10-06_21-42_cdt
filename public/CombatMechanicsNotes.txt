@@ -1,0 +1,141 @@
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+ 
+This is a variation on dice
+notation. For example: 1d20+2,
+one 20-sided die is rolled and 2
+is added to the result.
+ 
+ 
+ 
+Is rolling for initiative in D&D
+Bonus tied to some undefined
+attribute, currently is 0
+Bigger value goes first
+T is turn tracker, see Turn Check
+notes
+ 
+Sets initial distance to 3
+ 
+ 
+ 
+Enabled when D > 0
+Long range, enabled at D > 1
+Enabled at D = 0
+ 
+D reduces by 1
+D increases by 1
+Reduced crew casualties
+ 
+Recovers some Ship HP
+Recovers some crew
+Changes ammo type in Cannon
+ 
+ 
+When D = 6, flee from battle
+ 
+ 
+ 
+GH = Game HP, GC = Game crew
+ 
+ 
+PH = Player HP, PC = Player crew
+ 
+ 
+Ticks up turn tracker
+ 
+Tracker reset
+ 
+Player’s turn if T = 0 or 1
+Game’s turn if T = 2 or 3
+ 
+ 
+ 
+ 
+Default when out of battle
+ 
+ 
+
+Loot specific to enemy, need
+loot tables
+ 
+ 
+Restart or quit
+ 
+ 
+ 
+ 
+Can’t use cannon if ship is next
+to the other ship
+ 
+AT is for ammo type
+A1 tracks ammo type one:
+‘standard balls’
+A2 tracks ammo type two:
+‘grape shot’
+ 
+ 
+Normal shot damages the ship
+mostly with some loss of crew
+Distance impacts effectiveness
+ 
+Decrement’s ammo
+Grape shot mostly kills crew,
+doing little damage to ship
+ 
+ 
+ 
+ 
+ 
+Rifles are for long range
+accuracy at the expense of
+damage
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Boarding relies on crew
+numbers to deal damage
+ 
+Will need to be modified for
+combat without enemy crews
+ 
+Damage based on crew pop.
+Some casualties occur
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Probably implemented with a
+negative bonus on Game’s
+attack
+ 
+ 
+Shoring is wooden bracing and
+looks like the inside of a mine
+shaft when implemented
+ 
+ 
+Dressing as in wound dressings

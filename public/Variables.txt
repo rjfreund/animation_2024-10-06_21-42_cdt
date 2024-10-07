@@ -1,0 +1,23 @@
+List of Variables needed
+Full Name               Abbr.            Description
+Player Initiative       P                Used to determine turn order
+Game Initiative         G                Used to determine turn order
+Turn Tracker            T                For turn order. 1,2 is for player’s turn
+                                         and 3,4 is for game’s turn
+Ship Distance           D                           Engagement distance. Some combat
+                                         mechanics use distance
+Game HP                 GH        Game ‘ship’ hit points. Also for sea
+                                         monster hit points
+Player HP                      PH        Player’s ship’s hit points
+Game Crew                      GC        Need crew to man ship. May need
+                                         modification for sea monsters
+Player Crew                    PC        Player’s crew count
+Ammo tracker                   AT        Used in code to determine how to
+                                         calculate damage
+Ammo count Ball                A1        Normal canon shot. High hull
+                                         damage, low crew damage
+Ammo count Grape               A2        Alternate canon shot. Low hull
+                                         damage, high crew damage
+Ammo count Rifle               A3        Long range, low damage
+Shoring Inventory              IS        Restores some ship HP
+Dressing Inventory             ID        Restores some crew
